@@ -12,4 +12,8 @@ class User < ApplicationRecord
     @password = Password.create(new_password)
     self.password_hash = @password
   end
+
+  def is_authenticated?(verified_password)
+    password == verified_password
+  end
 end
