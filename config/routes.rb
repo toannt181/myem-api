@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   root to: 'application#index'
   resources :users
   post '/login', to: 'sessions#store'
+  post '/oauth2', to: 'oauths#store'
 end
