@@ -18,4 +18,12 @@ class ApplicationController < ActionController::API
       render json: 'token error', status: :unauthorized
     end
   end
+
+  def success_message
+    { status: :success }
+  end
+
+  def fail_message
+    { status: :fail }
+  end
 end

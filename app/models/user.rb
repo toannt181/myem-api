@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :oauths
 
   def password
-    @password ||= Password.new(password_hash)
+    @password ||= Password.new(password_hash) if password_hash
   end
 
   def password=(new_password)

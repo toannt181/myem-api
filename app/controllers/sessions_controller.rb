@@ -1,6 +1,10 @@
 class SessionsController < ApplicationController
-  def store
+  def create
     user_params = params.permit(:email, :password)
+
+    if user_params[:email].empty? || user_params[:password].empty?
+      return render status: :bad_request
+    end
 
     user = User.find_by({ email: user_params[:email] })
 
@@ -8,7 +12,7 @@ class SessionsController < ApplicationController
       token = JsonWebToken.encode(email: user.email, id: user.id)
       render json: token
     else
-      render status: :unauthorized
+      render json: fail_message, status: :unauthorized
     end
   end
 end
