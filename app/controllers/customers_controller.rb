@@ -1,10 +1,39 @@
 class CustomersController < ApplicationController
+  DIRECTION = { '1': :desc, '2': :asc }
+  ORDER = { '5': :code, '6': :name, '7': :pic_name }
+
   def index
-    customers = Customer.includes(:company).as_json
+    page = params[:page].to_i || 1
+    limit = params[:limit].to_i || Rails.configuration.x.limit
+    offset = (page - 1) * Rails.configuration.x.per_page
+    sort_by = ORDER[params[:sort].to_sym] || :created_at
+    direction = DIRECTION[params[:order].to_sym] || :desc
+    order = Hash[sort_by, direction]
+
+    query = Customer.includes(:company)
+      .order(order)
+
+    if (params[:code])
+      query = query.where('code LIKE ?', "%#{params[:code]}%")
+    end
+
+    if (params[:name])
+      query = query.where('name LIKE ?', "%#{params[:name]}%")
+    end
+
+    if (params[:pic_name])
+      query = query.where('pic_name LIKE ?', "%#{params[:pic_name]}%")
+    end
+
+    total = query.count
+    customers = query
+      .offset(offset)
+      .limit(limit)
+      .as_json
     customers.each do |customer|
       customer[:company] = {} if customer[:company].nil?
     end 
-    render json: customers
+    render json: { data: customers, meta: { from: offset + 1, to: offset + customers.length, total: total, page: page, limit: limit } }
   end
 
   def create

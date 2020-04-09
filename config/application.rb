@@ -40,5 +40,9 @@ module MyemApi
         resource '*', headers: :any, methods: [:get, :post, :put, :delete, :options]
       end
     end
+
+    # Custom config
+    config.x.limit = 30
+    config.x.per_page = 30
   end
 end
