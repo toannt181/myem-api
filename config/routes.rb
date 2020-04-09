@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   root to: 'application#index'
   resources :users
   resources :announcements
+  resources :customers do
+    resources :companies
+  end
   post '/login', to: 'sessions#create'
   post '/signup', to: 'users#create'
   post '/oauth2', to: 'oauths#create'
