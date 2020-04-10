@@ -89,18 +89,12 @@ class CustomersController < ApplicationController
       errors = {}
       if (csv_array.headers - ['code', 'name', 'pic_name']).length == 0
         csv_array.each_with_index do |row, index|
-          customer = Customer.new(row.to_h)
+          customer = row.to_h
           customers << customer
-          if !customer.valid?
-            errors["line_#{index + 1}".to_sym] = customer.errors
-          end
         end
-
-        if errors.empty?
-          customers.each { |customer| customer.save}
-          return render json: customers
-        end
-        return render json: errors, status: :bad_request
+        log = Log.create!(status: 0, action: :CustomersImportJob)
+        CustomersImportJob.set(wait: 1.second).perform_later(log.id, customers)
+        return render json: customers
       end
       return render json: { 'line_1': 'Error' }, status: :bad_request
     end
