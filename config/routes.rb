@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   root to: 'application#index'
   resources :users
   resources :announcements
+  get '/customers/sample', to: 'customers#sample'
+  get '/customers/utf8', to: 'customers#csv'
+  post '/customers/preview', to: 'customers#preview'
   resources :customers do
     resources :companies
   end

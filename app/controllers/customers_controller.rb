@@ -1,3 +1,5 @@
+require 'csv'    
+
 class CustomersController < ApplicationController
   DIRECTION = { '1': :desc, '2': :asc }
   ORDER = { '5': :code, '6': :name, '7': :pic_name }
@@ -66,6 +68,33 @@ class CustomersController < ApplicationController
     end
     customer.destroy
     render json: success_message, status: :no_content
+  end
+
+  def sample
+    render json: { shift_jis: customers_utf8_path, utf_8: customers_utf8_path }
+  end
+
+  def csv
+    send_file(
+      "#{Rails.root}/public/customer_utf8.csv",
+    )
+  end
+
+  def preview
+    file = params[:file]
+    if file
+      csv_text = File.read(params[:file])
+      csv_array = CSV.parse(csv_text, :headers => true)
+      customers = []
+      if (csv_array.headers - ['code', 'name', 'pic_name']).length == 0
+        csv_array.each do |row|
+          customers << Customer.create(row.to_h)
+        end
+        return render json: customers
+      end
+      return render json: { 'line_1': 'Error' }, status: :unprocessable_entity
+    end
+    render json: error_message, status: bad_request
   end
 
   private 
