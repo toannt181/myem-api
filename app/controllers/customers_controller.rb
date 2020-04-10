@@ -86,15 +86,25 @@ class CustomersController < ApplicationController
       csv_text = File.read(params[:file])
       csv_array = CSV.parse(csv_text, :headers => true)
       customers = []
+      errors = {}
       if (csv_array.headers - ['code', 'name', 'pic_name']).length == 0
-        csv_array.each do |row|
-          customers << Customer.create(row.to_h)
+        csv_array.each_with_index do |row, index|
+          customer = Customer.new(row.to_h)
+          customers << customer
+          if !customer.valid?
+            errors["line_#{index + 1}".to_sym] = customer.errors
+          end
         end
-        return render json: customers
+
+        if errors.empty?
+          customers.each { |customer| customer.save}
+          return render json: customers
+        end
+        return render json: errors, status: :bad_request
       end
-      return render json: { 'line_1': 'Error' }, status: :unprocessable_entity
+      return render json: { 'line_1': 'Error' }, status: :bad_request
     end
-    render json: error_message, status: bad_request
+    render json: error_message, status: :bad_request
   end
 
   private 
