@@ -9,5 +9,4 @@ require 'faker'
 
 100.times do
   customer = Customer.create({ name: Faker::Name.name, code: Faker::Code.unique.asin, pic_name: Faker::Appliance.brand })
-  customer.create_company()
 end

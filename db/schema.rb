@@ -12,21 +12,24 @@
 
 ActiveRecord::Schema.define(version: 2020_04_10_081213) do
 
-  create_table "announcements", force: :cascade do |t|
+  create_table "announcements", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "content"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "companies", force: :cascade do |t|
-    t.integer "customer_id"
+  create_table "companies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "customer_id"
+    t.integer "province"
+    t.integer "district"
+    t.integer "ward"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["customer_id"], name: "index_companies_on_customer_id"
   end
 
-  create_table "customers", force: :cascade do |t|
+  create_table "customers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "code"
     t.string "name"
     t.string "pic_name"
@@ -34,28 +37,45 @@ ActiveRecord::Schema.define(version: 2020_04_10_081213) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "logs", force: :cascade do |t|
+  create_table "district", id: :string, limit: 6, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.string "name", limit: 45, null: false
+    t.string "format", limit: 45, null: false
+    t.string "province_id", limit: 6, null: false
+  end
+
+  create_table "logs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "action"
     t.integer "status"
-    t.string "content"
+    t.string "content", comment: "0: pending, 1: start, 2: success, 3: fail"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "oauths", force: :cascade do |t|
+  create_table "oauths", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "provider"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_oauths_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "province", id: :string, limit: 6, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.string "name", limit: 45, null: false
+    t.string "format", limit: 45, null: false
+  end
+
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email"
     t.string "password_hash"
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "ward", id: :string, limit: 6, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.string "name", limit: 45, null: false
+    t.string "format", limit: 45, null: false
+    t.string "district_id", limit: 6, null: false
   end
 
 end

@@ -19,6 +19,8 @@ gem 'jwt'
 gem 'google-api-client', '~> 0.34'
 gem 'rack-cors'
 gem 'faker'
+gem 'dotenv-rails', groups: [:development, :test]
+gem 'mysql2', '~> 0.4.4'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

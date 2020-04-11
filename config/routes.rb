@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   get '/customers/sample', to: 'customers#sample'
   get '/customers/utf8', to: 'customers#csv'
   post '/customers/preview', to: 'customers#preview'
+  resources :cities
   resources :customers do
+    get '/company-info', to: 'companies#company_info'
     resources :companies
   end
   post '/login', to: 'sessions#create'
