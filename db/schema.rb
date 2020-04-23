@@ -21,9 +21,9 @@ ActiveRecord::Schema.define(version: 2020_04_10_081213) do
 
   create_table "companies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "customer_id"
-    t.integer "province"
-    t.integer "district"
-    t.integer "ward"
+    t.string "province_id"
+    t.string "district_id"
+    t.string "ward_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["customer_id"], name: "index_companies_on_customer_id"

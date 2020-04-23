@@ -2,9 +2,9 @@ class CreateCompanies < ActiveRecord::Migration[6.0]
   def change
     create_table :companies do |t|
       t.references :customer
-      t.integer :province
-      t.integer :district
-      t.integer :ward
+      t.string :province_id
+      t.string :district_id
+      t.string :ward_id
       t.timestamps
     end
   end

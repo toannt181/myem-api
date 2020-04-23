@@ -8,8 +8,19 @@ class CompaniesController < ApplicationController
 
   def update
     company_params = params.permit(:ward_id, :province_id, :district_id)
-    company = Company.find(params[:id])
-    company.update(company_params)
-    render json: success_message
+    begin
+      company = Company.find(params[:id])
+      province = Province.find(company_params[:province_id])
+      district = province.districts.find(company_params[:district_id])
+      ward = district.wards.find(company_params[:ward_id])
+      company.update(company_params)
+      render json: success_message
+    rescue => e
+      render json: e, status: :not_found
+    end
+  end
+
+  def show
+    render json: params
   end
 end

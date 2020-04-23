@@ -6,7 +6,10 @@ Rails.application.routes.draw do
   get '/customers/sample', to: 'customers#sample'
   get '/customers/utf8', to: 'customers#csv'
   post '/customers/preview', to: 'customers#preview'
-  resources :cities
+  resources :cities do
+    get '/districts', to: 'cities#get_districts'
+  end
+  get '/districts/:district_id/wards', to: 'cities#get_wards'
   resources :customers do
     get '/company-info', to: 'companies#company_info'
     resources :companies
