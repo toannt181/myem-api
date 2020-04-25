@@ -13,7 +13,10 @@ Rails.application.routes.draw do
   resources :customers do
     get '/company-info', to: 'companies#company_info'
     resources :companies
+    get '/divisions', to: 'divisions#index'
+    post '/divisions', to: 'divisions#create'
   end
+  delete '/divisions/:id', to: 'divisions#destroy'
   post '/login', to: 'sessions#create'
   post '/signup', to: 'users#create'
   post '/oauth2', to: 'oauths#create'
