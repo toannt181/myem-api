@@ -1,14 +1,17 @@
 class DivisionsController < ApplicationController
   def index
     customer = Customer.find(params[:customer_id])
-    render json: customer.divisions.order(sort: :asc)
+    divisions = customer.company.diagnosis.divisions.order(sort: :asc)
+    render json: divisions
   end
 
   def create
     data = params.permit(data: [:name, :id])[:data]
+    customer = Customer.find(params[:customer_id])
+    diagnosis_id = customer.company[:current_diagnosis]
     data.each_with_index do |item, index|
       item[:sort] = index
-      item[:customer_id] = params[:customer_id]
+      item[:diagnosis_id] = diagnosis_id
 
       if item[:id]
         Division.find(item[:id]).update(item)

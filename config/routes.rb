@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :companies
     get '/divisions', to: 'divisions#index'
     post '/divisions', to: 'divisions#create'
+    resources :diagnoses
   end
   delete '/divisions/:id', to: 'divisions#destroy'
   post '/login', to: 'sessions#create'

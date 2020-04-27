@@ -7,7 +7,7 @@ class CompaniesController < ApplicationController
   end
 
   def update
-    company_params = params.permit(:ward_id, :province_id, :district_id)
+    company_params = params.permit(:ward_id, :province_id, :district_id, :current_diagnosis)
     begin
       company = Company.find(params[:id])
       province = Province.find(company_params[:province_id])

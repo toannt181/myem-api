@@ -5,6 +5,7 @@ class CreateCompanies < ActiveRecord::Migration[6.0]
       t.string :province_id
       t.string :district_id
       t.string :ward_id
+      t.integer :current_diagnosis
       t.timestamps
     end
   end
